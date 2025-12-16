@@ -80,7 +80,7 @@ function App() {
       
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/20 to-transparent animate-pulse"></div>
       
-      <button
+      {/* <button
         onClick={toggleMute}
         className="fixed top-6 right-6 z-50 bg-gradient-to-br from-chile-blue to-blue-600 hover:from-chile-blue hover:to-blue-700 text-white p-4 rounded-full shadow-2xl hover:shadow-chile-blue/50 transition-all duration-300 hover:scale-110 active:scale-95"
         aria-label={isMuted ? 'Activar audio' : 'Silenciar audio'}
@@ -95,7 +95,7 @@ function App() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
           </svg>
         )}
-      </button>
+      </button> */}
       
       <img 
         src={chileFlag} 
