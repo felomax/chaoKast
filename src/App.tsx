@@ -5,6 +5,7 @@ import himnoChile from './assets/himno_chile.mp3'
 function App() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isMuted, setIsMuted] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
   const [timeLeft, setTimeLeft] = useState({
     months: 0,
     days: 0,
@@ -13,10 +14,22 @@ function App() {
     seconds: 0
   })
 
+  const playAudio = async () => {
+    if (audioRef.current && !isPlaying) {
+      try {
+        await audioRef.current.play()
+        setIsPlaying(true)
+      } catch (error) {
+        console.log('No se pudo reproducir el audio:', error)
+      }
+    }
+  }
+
   const toggleMute = () => {
     if (audioRef.current) {
       audioRef.current.muted = !audioRef.current.muted
       setIsMuted(!isMuted)
+      playAudio()
     }
   }
 
@@ -45,10 +58,17 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.play().catch(error => {
-        console.log('Autoplay bloqueado por el navegador:', error)
-      })
+    const handleUserInteraction = () => {
+      playAudio()
+      document.removeEventListener('click', handleUserInteraction)
+    }
+    
+    document.addEventListener('click', handleUserInteraction)
+    
+    playAudio()
+    
+    return () => {
+      document.removeEventListener('click', handleUserInteraction)
     }
   }, [])
 
@@ -59,9 +79,15 @@ function App() {
       
       <button
         onClick={toggleMute}
-        className="fixed top-6 right-6 z-50 bg-gradient-to-br from-chile-blue to-blue-600 hover:from-chile-blue hover:to-blue-700 text-white p-4 rounded-full shadow-2xl hover:shadow-chile-blue/50 transition-all duration-300 hover:scale-110 active:scale-95"
+        className="fixed top-6 right-6 z-50 bg-gradient-to-br from-chile-blue to-blue-600 hover:from-chile-blue hover:to-blue-700 text-white p-4 rounded-full shadow-2xl hover:shadow-chile-blue/50 transition-all duration-300 hover:scale-110 active:scale-95 group"
         aria-label={isMuted ? 'Activar audio' : 'Silenciar audio'}
       >
+        {!isPlaying && !isMuted && (
+          <span className="absolute -top-2 -right-2 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-chile-red opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-chile-red"></span>
+          </span>
+        )}
         {isMuted ? (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
