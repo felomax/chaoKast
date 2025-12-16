@@ -14,12 +14,7 @@ function App() {
     seconds: 0
   })
 
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !audioRef.current.muted
-      setIsMuted(!isMuted)
-    }
-  }
+
 
   useEffect(() => {
     const targetDate = new Date('2030-03-11T00:00:00')
